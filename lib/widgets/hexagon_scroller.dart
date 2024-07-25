@@ -115,16 +115,22 @@ class RenderTwoDimensionalHexagonViewport extends RenderTwoDimensionalViewport {
     final int maxRowIndex = builderDelegate.maxYIndex!;
     final int maxColumnIndex = builderDelegate.maxXIndex!;
 
-    final int leadingColumn =
-        math.max((horizontalPixels / hexagonWidth).floor(), 0);
+    final int leadingColumn = math.max(
+        (horizontalPixels / hexagonWidth).floor() -
+            (cacheExtent / hexagonWidth).floor(),
+        0);
     final int trailingColumn = math.min(
-        ((horizontalPixels + viewportWidth) / hexagonWidth).ceil(),
+        ((horizontalPixels + viewportWidth) / hexagonWidth).ceil() +
+            (cacheExtent / hexagonWidth).floor(),
         maxColumnIndex);
 
-    final int leadingRow =
-        math.max((verticalPixels / hexagonHeight).floor(), 0);
+    final int leadingRow = math.max(
+        (verticalPixels / hexagonHeight).floor() -
+            (cacheExtent / hexagonHeight).floor(),
+        0);
     final int trailingRow = math.min(
-        ((verticalPixels + viewportHeight) / hexagonHeight).ceil(),
+        ((verticalPixels + viewportHeight) / hexagonHeight).ceil() +
+            (cacheExtent / hexagonHeight).floor(),
         maxRowIndex);
 
     double xLayoutOffset =
