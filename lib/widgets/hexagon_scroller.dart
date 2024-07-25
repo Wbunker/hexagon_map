@@ -104,21 +104,34 @@ class RenderTwoDimensionalHexagonViewport extends RenderTwoDimensionalViewport {
 
   @override
   void layoutChildSequence() {
+    // Get the current scroll positions in pixels
     final double horizontalPixels = horizontalOffset.pixels;
     final double verticalPixels = verticalOffset.pixels;
+
+    // Calculate the dimensions of the viewport including the cache extent
     final double viewportWidth = viewportDimension.width + cacheExtent;
     final double viewportHeight = viewportDimension.height + cacheExtent;
 
+    // Cast the delegate to TwoDimensionalChildBuilderDelegate to access max indices
     final TwoDimensionalChildBuilderDelegate builderDelegate =
         delegate as TwoDimensionalChildBuilderDelegate;
 
+    // Get the maximum row and column indices from the builder delegate
     final int maxRowIndex = builderDelegate.maxYIndex!;
     final int maxColumnIndex = builderDelegate.maxXIndex!;
 
+    // Calculate the leading column index to start rendering from
+    // This is based on the current horizontal scroll position divided by the width of a hexagon
+    // Subtract the cache extent divided by the hexagon width to include off-screen items for smooth scrolling
+    // Ensure the index is not less than 0
     final int leadingColumn = math.max(
         (horizontalPixels / hexagonWidth).floor() -
             (cacheExtent / hexagonWidth).floor(),
         0);
+    // Calculate the trailing column index to stop rendering at
+    // This is based on the current horizontal scroll position plus the viewport width divided by the width of a hexagon
+    // Add the cache extent divided by the hexagon width to include off-screen items for smooth scrolling
+    // Ensure the index does not exceed the maximum column index
     final int trailingColumn = math.min(
         ((horizontalPixels + viewportWidth) / hexagonWidth).ceil() +
             (cacheExtent / hexagonWidth).floor(),
