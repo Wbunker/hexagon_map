@@ -2,16 +2,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class Hexagon extends StatelessWidget {
-  const Hexagon({
-    super.key,
-  });
+  final String imagePath;
+  const Hexagon({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-        clipper: _Hexagon(),
-        child:
-            const Image(image: AssetImage('images/00063-742592959_hex.png')));
+        clipper: _Hexagon(), child: Image(image: AssetImage(imagePath)));
   }
 }
 
